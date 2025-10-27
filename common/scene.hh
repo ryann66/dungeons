@@ -1,14 +1,20 @@
 #pragma once
 #include <SDL3/SDL.h>
 
-#include "sceneManager.hh"
+class SceneManager;
+
+enum SceneType {
+    MAIN_MENU, SETTINGS, GAME
+};
 
 class Scene {
   protected:
-    const SceneManager context;
+    const SceneManager* context;
 
   public:
-    Scene(SceneManager context) : context(context) { }
+    const SceneType type;
+
+    Scene(SceneManager* context, SceneType type) : context(context), type(type) { }
 
     /*
      * Called when a scene is becoming active
@@ -32,11 +38,13 @@ class Scene {
      * Called when an event occurs
      * Should not call render
      */
-    virtual void event(SDL_Event event);
+    virtual void event(SDL_Event* event);
 
     /*
      * Called to render the scene to the given window
      * this may be called while the scene is inactive!
      */
     virtual void render(SDL_Window* window) = 0;
+
+    virtual ~Scene() = default;
 };
