@@ -1,7 +1,10 @@
 #pragma once
 
-#include "scene.hh"
 #include <unordered_map>
+
+#include <SDL3/SDL.h>
+
+#include "scene.hh"
 
 using std::unordered_map;
 
@@ -32,6 +35,8 @@ class SceneManager {
     inline Scene* getCurrentScene() {
         return current;
     }
+
+    void renderBackground(SDL_Window *window);
 
     ~SceneManager();
 };

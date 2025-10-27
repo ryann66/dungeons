@@ -1,5 +1,7 @@
 #include "sceneManager.hh"
 #include "scene.hh"
+#include <SDL3/SDL_surface.h>
+#include <SDL3/SDL_video.h>
 #include <stdexcept>
 
 void SceneManager::addScene(Scene* scene, SceneType type) {
@@ -30,6 +32,18 @@ void SceneManager::focus(SceneType type) {
     current->onUnload();
     current = itr->second;
     current->onLoad();
+}
+
+void SceneManager::renderBackground(SDL_Window *window) {
+    auto itr = scenes[GAME];
+    if (itr != nullptr) {
+        itr->render(window);
+        return;
+    }
+
+    // render failsafe black background
+    SDL_Surface* surf = SDL_GetWindowSurface(window);
+    SDL_FillSurfaceRect(surf, NULL, SDL_MapSurfaceRGB(surf, 0, 0, 0));
 }
 
 SceneManager::~SceneManager() {

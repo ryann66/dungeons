@@ -38,7 +38,7 @@ class Scene {
      * Called when an event occurs
      * Should not call render
      */
-    virtual void event(SDL_Event* event);
+    virtual void event(SDL_Window* window, SDL_Event* event);
 
     /*
      * Called to render the scene to the given window
