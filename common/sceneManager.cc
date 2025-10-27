@@ -10,12 +10,14 @@ void SceneManager::addScene(Scene* scene, SceneType type) {
         if (itr->second == current) throw new std::invalid_argument("Overwriting current scene");
         delete itr->second;
     }
+    scenes[type] = scene;
 }
 
 void SceneManager::removeScene(SceneType type) {
     if (current->type == type) throw new std::invalid_argument("Erasing current scene");
     auto itr = scenes.find(type);
     if (itr == scenes.end()) throw new std::invalid_argument("Scene does not exist");
+    delete itr->second;
     scenes.erase(itr);
 }
 
