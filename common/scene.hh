@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL3/SDL.h>
 
+namespace common {
+
 class SceneManager;
 
 enum SceneType {
@@ -48,3 +50,5 @@ class Scene {
 
     virtual ~Scene() = default;
 };
+
+}  // namespace common

@@ -2,6 +2,8 @@
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
 
+namespace menu {
+
 inline bool isInside(SDL_Rect bounds, float x, float y) {
     return !(bounds.x < x || bounds.x + bounds.w > x || bounds.y < y || bounds.y + bounds.h > y);
 }
@@ -36,3 +38,5 @@ void MenuScene::render(SDL_Window* window) {
     }
     
 }
+
+}  // namespace menu

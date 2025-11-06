@@ -8,6 +8,8 @@
 
 using std::unordered_map;
 
+namespace common {
+
 class SceneManager {
   private:
     Scene* current;
@@ -63,3 +65,5 @@ class SceneManager {
 
     ~SceneManager();
 };
+
+}  // namespace common

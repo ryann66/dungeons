@@ -9,6 +9,9 @@
 #include "element.hh"
 
 using std::vector;
+using common::Scene;
+
+namespace menu {
 
 class MenuScene : public Scene {
   protected:
@@ -19,3 +22,5 @@ class MenuScene : public Scene {
 
     virtual void render(SDL_Window* window);
 };
+
+}  // namespace menu

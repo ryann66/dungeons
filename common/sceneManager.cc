@@ -4,6 +4,8 @@
 #include <SDL3/SDL_video.h>
 #include <stdexcept>
 
+namespace common {
+
 void SceneManager::addScene(Scene* scene, SceneType type) {
     auto itr = scenes.find(type);
     if (itr != scenes.end()) {
@@ -51,3 +53,5 @@ void SceneManager::renderBackground(SDL_Window *window) {
 SceneManager::~SceneManager() {
     for (auto scn : scenes) delete scn.second;
 }
+
+}  // namespace common

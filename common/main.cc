@@ -8,6 +8,9 @@
 
 #include "sceneManager.hh"
 
+using common::SceneManager;
+using common::Scene;
+
 void log_error(std::exception* exp) {
 
 }
@@ -31,7 +34,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 
 SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
     try {
-        ((SceneManager*) appstate)->getCurrentScene()->event(event);
+        ((SceneManager*) appstate)->getCurrentScene()->event(SDL_GL_GetCurrentWindow(), event);
         return SDL_APP_CONTINUE;
     } catch (std::exception* exp) {
         log_error(exp);

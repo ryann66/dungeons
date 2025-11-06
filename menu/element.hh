@@ -5,6 +5,10 @@
 #include <SDL3/SDL_surface.h>
 #include <stdexcept>
 
+using common::position;
+
+namespace menu {
+
 struct element {
     position pos;
 
@@ -28,19 +32,20 @@ struct element {
         }
         r.w = pos.width;
         switch (pos.anchor & ALIGN_VERTICAL_MASK) {
-            case ALIGN_VERTICAL_LEFT:
-                r.x = pos.xOffset;
+            case ALIGN_VERTICAL_TOP:
+                r.y = pos.yOffset;
                 break;
             case ALIGN_VERTICAL_CENTER:
-                r.x = (w - pos.xOffset - pos.width) / 2;
+                r.y = (h - pos.yOffset - pos.height) / 2;
                 break;
-            case ALIGN_VERTICAL_RIGHT:
-                r.x = w - pos.xOffset - pos.width;
+            case ALIGN_VERTICAL_BOTTOM:
+                r.y = h - pos.yOffset - pos.height;
                 break;
             default:
-                throw new std::runtime_error("invalid anchor mask (horizontal bits)");
+                throw new std::runtime_error("invalid anchor mask (vertical bits)");
         }
-        r.w = pos.width;
+        r.h = pos.height;
+        return r;
     }
 
     /*
@@ -54,3 +59,5 @@ struct element {
      */
     virtual bool onClick() = 0;
 };
+
+}  // namespace menu
