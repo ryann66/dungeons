@@ -1,5 +1,9 @@
 #include "sceneManager.hh"
 #include "scene.hh"
+#include "colors.h"
+
+#include <SDL3/SDL_pixels.h>
+#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
 #include <stdexcept>
@@ -46,8 +50,10 @@ void SceneManager::renderBackground(SDL_Window *window) {
     }
 
     // render failsafe black background
-    SDL_Surface* surf = SDL_GetWindowSurface(window);
-    SDL_FillSurfaceRect(surf, NULL, SDL_MapSurfaceRGB(surf, 0, 0, 0));
+    SDL_Renderer* render = SDL_GetRenderer(window);
+    SDL_SetRenderDrawColor(render, COLOR_BLACK, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(render);
+    
 }
 
 SceneManager::~SceneManager() {

@@ -1,4 +1,5 @@
 #include "menuScene.hh"
+#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
 
@@ -16,7 +17,7 @@ void MenuScene::event(SDL_Window* window, SDL_Event* event) {
             int w, h;
             SDL_GetWindowSize(window, &w, &h);
 
-            for (element& el : elements) {
+            for (Element& el : elements) {
                 if (isInside(el.calcPosition(w, h), x, y)) {
                     if (el.onClick()) return;
                 }
@@ -30,11 +31,11 @@ void MenuScene::render(SDL_Window* window) {
     SDL_GetMouseState(&x, &y);
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
-    SDL_Surface* surf = SDL_GetWindowSurface(window);
+    SDL_Renderer* render = SDL_GetRenderer(window);
 
-    for (element& el : elements) {
+    for (Element& el : elements) {
         SDL_Rect pos = el.calcPosition(w, h);
-        el.render(surf, pos, isInside(pos, x, y));
+        el.render(render, pos, isInside(pos, x, y));
     }
     
 }

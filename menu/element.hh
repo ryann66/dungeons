@@ -3,13 +3,14 @@
 #include "../common/position.hh"
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_surface.h>
+#include <SDL3/SDL_render.h>
 #include <stdexcept>
 
 using common::position;
 
 namespace menu {
 
-struct element {
+struct Element {
     position pos;
 
     /*
@@ -51,11 +52,11 @@ struct element {
     /*
      * Draws this element onto the surface in the given location
      */
-    virtual void render(SDL_Surface* surf, SDL_Rect loc, bool is_hover) = 0;
+    virtual void render(SDL_Renderer* render, SDL_Rect loc, bool is_hover) = 0;
 
     /*
      * Called when the element is clicked on
-     * returns true iff the menu is changed (add buttons, switch scenes, etc.)
+     * returns true iff the menu is changed/invalidated (add buttons, switch scenes, etc.)
      */
     virtual bool onClick() = 0;
 };
