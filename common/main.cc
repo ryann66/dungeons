@@ -9,6 +9,8 @@
 
 #include "sceneManager.hh"
 
+#include "mainMenu.hh"
+
 using common::SceneManager;
 using common::Scene;
 
@@ -18,10 +20,12 @@ void log_error(std::exception* exp) {
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv) {
     // TODO: setup main menu and return
-    *appstate = new SceneManager();
+    *appstate = new SceneManager(nullptr);
 
     SDL_Window* win = SDL_GL_GetCurrentWindow();
     SDL_CreateRenderer(win, nullptr);
+
+    return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppIterate(void* appstate) {

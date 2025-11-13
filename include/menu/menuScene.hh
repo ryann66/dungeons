@@ -10,6 +10,8 @@
 
 using std::vector;
 using common::Scene;
+using common::SceneManager;
+using common::SceneType;
 
 namespace menu {
 
@@ -18,6 +20,8 @@ class MenuScene : public Scene {
     vector<Element> elements;
 
   public:
+    MenuScene(SceneManager* context, SceneType type) : Scene(context, type) { }
+
     virtual void event(SDL_Window* window, SDL_Event* event);
 
     virtual void render(SDL_Window* window);

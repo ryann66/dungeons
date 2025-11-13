@@ -1,6 +1,9 @@
 #include "sceneManager.hh"
 #include "scene.hh"
-#include "colors.h"
+
+extern "C" {
+    #include "colors.h"
+}
 
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
