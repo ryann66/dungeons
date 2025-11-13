@@ -5,7 +5,7 @@
 #include <SDL3/SDL_video.h>
 #include <vector>
 
-#include "../common/scene.hh"
+#include "scene.hh"
 #include "element.hh"
 
 using std::vector;

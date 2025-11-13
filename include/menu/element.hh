@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common/position.hh"
+#include "position.hh"
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_render.h>
