@@ -12,3 +12,5 @@ include_directories(${SDL3_INCLUDE_DIRS})
 
 add_subdirectory(common)
 add_subdirectory(menu)
+
+file(COPY ${CMAKE_SOURCE_DIR}/resources/ DESTINATION ${CMAKE_BINARY_DIR}/build/)

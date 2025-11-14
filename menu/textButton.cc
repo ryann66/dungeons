@@ -1,7 +1,7 @@
 #include "textButton.hh"
 
 extern "C" {
-    #include "../common/colors.h"
+    #include "colors.h"
 }
 
 #include <SDL3/SDL_pixels.h>
