@@ -92,17 +92,18 @@ inline TTF_Font* requireFont(const char* path, float ptsize) {
 	TTF_Font* fnt = TTF_OpenFont(path, ptsize);
 	if (fnt == NULL)
 		throw new std::runtime_error("Failed to open font");
+	return fnt;
 }
 
 void initTextHelper() {
-	fonts[font::TINY].internal = TTF_OpenFont(DEFAULT_FONT_FILE, PT_SIZE_TINY);
-	fonts[font::SMALL].internal = TTF_OpenFont(DEFAULT_FONT_FILE, PT_SIZE_SMALL);
-	fonts[font::MEDIUM].internal = TTF_OpenFont(DEFAULT_FONT_FILE, PT_SIZE_MEDIUM);
-	fonts[font::LARGE].internal = TTF_OpenFont(DEFAULT_FONT_FILE, PT_SIZE_LARGE);
-	fonts[font::EXTRA_LARGE].internal = TTF_OpenFont(DEFAULT_FONT_FILE, PT_SIZE_EXTRA_LARGE);
-	fonts[font::TITLE_MEDIUM].internal = TTF_OpenFont(TITLE_FONT_FILE, PT_SIZE_MEDIUM);
-	fonts[font::TITLE_LARGE].internal = TTF_OpenFont(TITLE_FONT_FILE, PT_SIZE_LARGE);
-	fonts[font::TITLE_EXTRA_LARGE].internal = TTF_OpenFont(TITLE_FONT_FILE, PT_SIZE_EXTRA_LARGE);
+	fonts[font::TINY].internal = requireFont(DEFAULT_FONT_FILE, PT_SIZE_TINY);
+	fonts[font::SMALL].internal = requireFont(DEFAULT_FONT_FILE, PT_SIZE_SMALL);
+	fonts[font::MEDIUM].internal = requireFont(DEFAULT_FONT_FILE, PT_SIZE_MEDIUM);
+	fonts[font::LARGE].internal = requireFont(DEFAULT_FONT_FILE, PT_SIZE_LARGE);
+	fonts[font::EXTRA_LARGE].internal = requireFont(DEFAULT_FONT_FILE, PT_SIZE_EXTRA_LARGE);
+	fonts[font::TITLE_MEDIUM].internal = requireFont(TITLE_FONT_FILE, PT_SIZE_MEDIUM);
+	fonts[font::TITLE_LARGE].internal = requireFont(TITLE_FONT_FILE, PT_SIZE_LARGE);
+	fonts[font::TITLE_EXTRA_LARGE].internal = requireFont(TITLE_FONT_FILE, PT_SIZE_EXTRA_LARGE);
 
 	fonts[font::SMALL].downsize = &fonts[font::TINY];
 	fonts[font::MEDIUM].downsize = &fonts[font::SMALL];
