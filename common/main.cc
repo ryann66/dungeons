@@ -1,4 +1,5 @@
 #include <SDL3/SDL_events.h>
+#include <SDL3/SDL_log.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include <exception>
@@ -24,13 +25,12 @@ using common::Scene;
 using menu::buildMainMenu;
 
 void log_error(std::exception* exp) {
-
+    SDL_Log("%s\n", exp->what());
 }
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv) {
     // TODO: setup main menu and return
     *appstate = new SceneManager(buildMainMenu);
-    
     SDL_Window* win;
     SDL_Renderer* ren;
     SDL_CreateWindowAndRenderer(PROGRAM_NAME, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 0, &win, &ren);
