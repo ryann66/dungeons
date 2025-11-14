@@ -91,7 +91,7 @@ void renderText(const position& pos, string& str, font font) {
 inline TTF_Font* requireFont(const char* path, float ptsize) {
 	TTF_Font* fnt = TTF_OpenFont(path, ptsize);
 	if (fnt == NULL)
-		throw new std::runtime_error("Failed to open font");
+		throw new std::runtime_error(SDL_GetError());
 	return fnt;
 }
 
