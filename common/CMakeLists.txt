@@ -4,4 +4,4 @@ target_compile_definitions(dungeons PRIVATE PROGRAM_NAME=\"${CMAKE_PROJECT_NAME}
 
 target_include_directories(dungeons PRIVATE ../include/common)
 
-target_link_libraries(dungeons menu SDL3)
+target_link_libraries(dungeons menu SDL3 SDL3_ttf)

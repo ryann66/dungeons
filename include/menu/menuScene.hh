@@ -5,26 +5,26 @@
 #include <SDL3/SDL_video.h>
 #include <vector>
 
-#include "scene.hh"
 #include "element.hh"
+#include "scene.hh"
 
-using std::vector;
 using common::Scene;
 using common::SceneManager;
 using common::SceneType;
+using std::vector;
 
 namespace menu {
 
 class MenuScene : public Scene {
   protected:
-    vector<Element> elements;
+	vector<Element> elements;
 
   public:
-    MenuScene(SceneManager* context, SceneType type) : Scene(context, type) { }
+	MenuScene(SceneManager* context, SceneType type) : Scene(context, type) {}
 
-    virtual void event(SDL_Window* window, SDL_Event* event);
+	virtual void event(SDL_Event* event);
 
-    virtual void render(SDL_Window* window);
+	virtual void render();
 };
 
-}  // namespace menu
+} // namespace menu

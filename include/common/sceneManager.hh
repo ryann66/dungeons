@@ -12,59 +12,58 @@ namespace common {
 
 class SceneManager {
   private:
-    Scene* current;
-    unordered_map<SceneType, Scene*> scenes;
+	Scene* current;
+	unordered_map<SceneType, Scene*> scenes;
 
   public:
-    SceneManager(Scene*(*main)(SceneManager*)) {
-        current = main(this);
-        scenes[MAIN_MENU] = current;
-    }
+	SceneManager(Scene* (*main)(SceneManager*)) {
+		current = main(this);
+		scenes[MAIN_MENU] = current;
+	}
 
-    /*
-     * Adds a scene to the manager, overwriting the scene currently in that slot
-     * Cannot overwrite the current scene
-     */
-    void addScene(Scene* scene, SceneType type);
+	/*
+	 * Adds a scene to the manager, overwriting the scene currently in that slot
+	 * Cannot overwrite the current scene
+	 */
+	void addScene(Scene* scene, SceneType type);
 
-    /*
-     * Removes the scene, cannot remove the current scene
-     */
-    void removeScene(SceneType type);
+	/*
+	 * Removes the scene, cannot remove the current scene
+	 */
+	void removeScene(SceneType type);
 
-    /*
-     * Removes (exits) the current scene and loads the given scene
-     */
-    void exitToScene(SceneType type);
+	/*
+	 * Removes (exits) the current scene and loads the given scene
+	 */
+	void exitToScene(SceneType type);
 
-    /*
-     * Loads the given scene
-     */
-    void focus(SceneType type);
+	/*
+	 * Loads the given scene
+	 */
+	void focus(SceneType type);
 
-    /*
-     * gets the scene of the desired type
-     */
-    inline Scene* getScene(SceneType type) {
-        auto itr = scenes.find(type);
-        if (itr == scenes.end()) return nullptr;
-        return itr->second;
-    }
+	/*
+	 * gets the scene of the desired type
+	 */
+	inline Scene* getScene(SceneType type) {
+		auto itr = scenes.find(type);
+		if (itr == scenes.end())
+			return nullptr;
+		return itr->second;
+	}
 
-    /*
-     * Gets the currently active scene
-     */
-    inline Scene* getCurrentScene() {
-        return current;
-    }
+	/*
+	 * Gets the currently active scene
+	 */
+	inline Scene* getCurrentScene() { return current; }
 
-    /*
-     * For scenes that want to use the game as a background
-     * Renders the game scene, or black if it does not exist
-     */
-    void renderBackground(SDL_Window *window);
+	/*
+	 * For scenes that want to use the game as a background
+	 * Renders the game scene, or black if it does not exist
+	 */
+	void renderBackground();
 
-    ~SceneManager();
+	~SceneManager();
 };
 
-}  // namespace common
+} // namespace common

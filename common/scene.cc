@@ -4,12 +4,12 @@
 
 namespace common {
 
-void Scene::onLoad() { }
+void Scene::onLoad() {}
 
-void Scene::onUnload() { }
+void Scene::onUnload() {}
 
-void Scene::iterate() { }
+void Scene::iterate() {}
 
-void Scene::event(SDL_Window* win, SDL_Event* evt) { }
+void Scene::event(SDL_Event* evt) {}
 
-}  // namespace common
+} // namespace common

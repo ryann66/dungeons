@@ -10,16 +10,16 @@ using std::string;
 namespace menu {
 
 class TextButton : public Element {
-    string text;
-    MenuScene* context;
-    bool (*callback)(MenuScene*);
+	string text;
+	MenuScene* context;
+	bool (*callback)(MenuScene*);
 
   public:
-    TextButton(MenuScene* context, bool (*callback)(MenuScene*), string text);
+	TextButton(MenuScene* context, bool (*callback)(MenuScene*), string text);
 
-    virtual void render(SDL_Renderer* render, SDL_Rect loc, bool is_hover);
+	virtual void render(SDL_Renderer* render, SDL_Rect loc, bool is_hover);
 
-    virtual bool onClick();
+	virtual bool onClick();
 };
 
-}  // namespace menu
+} // namespace menu

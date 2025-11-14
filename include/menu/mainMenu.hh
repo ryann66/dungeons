@@ -15,4 +15,4 @@ class MainMenuScene : public MenuScene {
 
 Scene* buildMainMenu(SceneManager* ctx);
 
-}  // namespace menu
+} // namespace menu
