@@ -1,4 +1,6 @@
 #include "textButton.hh"
+#include "main.hh"
+#include <SDL3/SDL_render.h>
 
 extern "C" {
 #include "colors.h"
@@ -13,17 +15,19 @@ using common::renderText;
 
 namespace menu {
 
-TextButton::TextButton(MenuScene* context, bool (*callback)(MenuScene*), string text)
-	: text(text), callback(callback), context(context) {}
+TextButton::TextButton(MenuScene* context, position pos, bool (*callback)(MenuScene*), string text)
+	: text(text), Element(pos), callback(callback), context(context) {}
 
-void TextButton::render(SDL_Renderer* render, SDL_Rect loc, bool is_hover) {
+void TextButton::render(SDL_Rect loc, bool is_hover) {
 	if (!is_hover)
-		SDL_SetRenderDrawColor(render, COLOR_BUTTON_BACKGROUND, SDL_ALPHA_OPAQUE);
+		SDL_SetRenderDrawColor(renderer, COLOR_BUTTON_BACKGROUND, SDL_ALPHA_OPAQUE);
 	else
-		SDL_SetRenderDrawColor(render, COLOR_BUTTON_BACKGROUND_FOCUSED, SDL_ALPHA_OPAQUE);
+		SDL_SetRenderDrawColor(renderer, COLOR_BUTTON_BACKGROUND_FOCUSED, SDL_ALPHA_OPAQUE);
 	SDL_FRect fr;
 	SDL_RectToFRect(&loc, &fr);
-	SDL_RenderRect(render, &fr);
+	SDL_RenderRect(renderer, &fr);
+
+	SDL_SetRenderDrawColor(renderer, COLOR_BUTTON_FOREGROUND, SDL_ALPHA_OPAQUE);
 	renderText(pos, text, common::font::SMALL);
 }
 

@@ -17,7 +17,7 @@ namespace menu {
 
 class MenuScene : public Scene {
   protected:
-	vector<Element> elements;
+	vector<Element*> elements;
 
   public:
 	MenuScene(SceneManager* context, SceneType type) : Scene(context, type) {}
@@ -25,6 +25,8 @@ class MenuScene : public Scene {
 	virtual void event(SDL_Event* event);
 
 	virtual void render();
+
+	~MenuScene();
 };
 
 } // namespace menu

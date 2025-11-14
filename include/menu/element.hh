@@ -13,6 +13,8 @@ namespace menu {
 struct Element {
 	position pos;
 
+	Element(position pos) : pos(pos) {}
+
 	/*
 	 * Calculates the bounds of this element based off the width and height of
 	 * the window/surface
@@ -53,7 +55,7 @@ struct Element {
 	/*
 	 * Draws this element onto the surface in the given location
 	 */
-	virtual void render(SDL_Renderer* render, SDL_Rect loc, bool is_hover) = 0;
+	virtual void render(SDL_Rect loc, bool is_hover) = 0;
 
 	/*
 	 * Called when the element is clicked on
@@ -61,6 +63,8 @@ struct Element {
 	 * scenes, etc.)
 	 */
 	virtual bool onClick() = 0;
+
+	virtual ~Element() = default;
 };
 
 } // namespace menu

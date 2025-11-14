@@ -15,9 +15,9 @@ class TextButton : public Element {
 	bool (*callback)(MenuScene*);
 
   public:
-	TextButton(MenuScene* context, bool (*callback)(MenuScene*), string text);
+	TextButton(MenuScene* context, position pos, bool (*callback)(MenuScene*), string text);
 
-	virtual void render(SDL_Renderer* render, SDL_Rect loc, bool is_hover);
+	virtual void render(SDL_Rect loc, bool is_hover);
 
 	virtual bool onClick();
 };

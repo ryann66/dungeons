@@ -20,9 +20,9 @@ void MenuScene::event(SDL_Event* event) {
 			int w, h;
 			SDL_GetWindowSize(window, &w, &h);
 
-			for (Element& el : elements) {
-				if (isInside(el.calcPosition(w, h), x, y)) {
-					if (el.onClick())
+			for (Element* el : elements) {
+				if (isInside(el->calcPosition(w, h), x, y)) {
+					if (el->onClick())
 						return;
 				}
 			}
@@ -36,10 +36,15 @@ void MenuScene::render() {
 	int w, h;
 	SDL_GetWindowSize(window, &w, &h);
 
-	for (Element& el : elements) {
-		SDL_Rect pos = el.calcPosition(w, h);
-		el.render(renderer, pos, isInside(pos, x, y));
+	for (Element* el : elements) {
+		SDL_Rect pos = el->calcPosition(w, h);
+		el->render(pos, isInside(pos, x, y));
 	}
+}
+
+MenuScene::~MenuScene() {
+	for (Element* el : elements)
+		delete el;
 }
 
 } // namespace menu
