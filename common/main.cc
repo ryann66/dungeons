@@ -1,4 +1,3 @@
-#include "menuBuilder.hh"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
@@ -12,6 +11,13 @@
 
 #include "mainMenu.hh"
 
+#ifndef PROGRAM_NAME
+#define PROGRAM_NAME ""
+#endif
+
+#define DEFAULT_WINDOW_WIDTH 1800
+#define DEFAULT_WINDOW_HEIGHT 1000
+
 using common::SceneManager;
 using common::Scene;
 
@@ -23,10 +29,11 @@ void log_error(std::exception* exp) {
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv) {
     // TODO: setup main menu and return
-    *appstate = new SceneManager(buildMainMenu());
-
-    SDL_Window* win = SDL_GL_GetCurrentWindow();
-    SDL_CreateRenderer(win, nullptr);
+    *appstate = new SceneManager(buildMainMenu);
+    
+    SDL_Window* win;
+    SDL_Renderer* ren;
+    SDL_CreateWindowAndRenderer(PROGRAM_NAME, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 0, &win, &ren);
 
     return SDL_APP_CONTINUE;
 }
@@ -44,6 +51,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 }
 
 SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
+    if (event->type == SDL_EVENT_QUIT) return SDL_APP_SUCCESS;
     try {
         ((SceneManager*) appstate)->getCurrentScene()->event(SDL_GL_GetCurrentWindow(), event);
         return SDL_APP_CONTINUE;
