@@ -61,10 +61,14 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv) {
 	}
 
 	*appstate = new SceneManager(buildMainMenu);
-	if (!SDL_CreateWindowAndRenderer(PROGRAM_NAME, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 0, &window,
-									 &renderer)) {
+	if (!SDL_CreateWindowAndRenderer(PROGRAM_NAME, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE,
+									 &window, &renderer)) {
 		log_sdl_error();
 		return SDL_APP_FAILURE;
+	}
+
+	if (!SDL_SetRenderVSync(renderer, 1)) {
+		log_sdl_error();
 	}
 
 	if (!TTF_Init()) {
