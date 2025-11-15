@@ -1,5 +1,6 @@
 #include "textButton.hh"
 #include "main.hh"
+#include "position.hh"
 #include <SDL3/SDL_render.h>
 
 extern "C" {
@@ -11,6 +12,7 @@ extern "C" {
 
 #include "textHelper.hh"
 
+using common::Anchor;
 using common::renderText;
 
 namespace menu {
@@ -25,10 +27,12 @@ void TextButton::render(SDL_Rect loc, bool is_hover) {
 		SDL_SetRenderDrawColor(renderer, COLOR_BUTTON_BACKGROUND_FOCUSED, SDL_ALPHA_OPAQUE);
 	SDL_FRect fr;
 	SDL_RectToFRect(&loc, &fr);
-	SDL_RenderRect(renderer, &fr);
+	SDL_RenderFillRect(renderer, &fr);
 
 	SDL_SetRenderDrawColor(renderer, COLOR_BUTTON_FOREGROUND, SDL_ALPHA_OPAQUE);
-	renderText(pos, text, common::font::SMALL);
+	renderText(
+		(position){.anchor = Anchor::CENTER, .xOffset = loc.x, .yOffset = loc.y, .width = loc.w, .height = loc.h}, text,
+		common::font::EXTRA_LARGE);
 }
 
 bool TextButton::onClick() {

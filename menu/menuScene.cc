@@ -9,7 +9,7 @@
 namespace menu {
 
 inline bool isInside(SDL_Rect bounds, float x, float y) {
-	return !(bounds.x < x || bounds.x + bounds.w > x || bounds.y < y || bounds.y + bounds.h > y);
+	return !(bounds.x > x || bounds.x + bounds.w < x || bounds.y > y || bounds.y + bounds.h < y);
 }
 
 void MenuScene::event(SDL_Event* event) {

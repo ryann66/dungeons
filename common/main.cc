@@ -92,6 +92,7 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
 		Scene* scn = ((SceneManager*)appstate)->getCurrentScene();
 		scn->iterate();
 		scn->render();
+		SDL_RenderPresent(renderer);
 		return SDL_APP_CONTINUE;
 	} catch (exception* exp) {
 		log_error(exp);
@@ -114,4 +115,5 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
 void SDL_AppQuit(void* appstate, SDL_AppResult result) {
 	delete (SceneManager*)appstate;
 	quitTextHelper();
+	TTF_Quit();
 }

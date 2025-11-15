@@ -7,11 +7,11 @@
 
 #include <stdexcept>
 
-#define PT_SIZE_TINY 8
-#define PT_SIZE_SMALL 12
-#define PT_SIZE_MEDIUM 18
-#define PT_SIZE_LARGE 26
-#define PT_SIZE_EXTRA_LARGE 36
+#define PT_SIZE_TINY 16
+#define PT_SIZE_SMALL 24
+#define PT_SIZE_MEDIUM 32
+#define PT_SIZE_LARGE 48
+#define PT_SIZE_EXTRA_LARGE 60
 
 #define DEFAULT_FONT_FILE "./fonts/wiltype/wiltype.ttf"
 #define TITLE_FONT_FILE "./fonts/wiltype/wiltype.ttf"
@@ -30,7 +30,7 @@ font_t fonts[font::INVALID];
 inline bool fontFits(int w, int h, const char* str, TTF_Font* font) {
 	int mw, mh;
 	TTF_GetStringSize(font, str, 0, &mw, &mh);
-	return w <= mw && h <= mh;
+	return mw <= w && mh <= h;
 }
 
 inline TTF_Font* findFont(int w, int h, string& str, font font) {
@@ -105,17 +105,22 @@ void initTextHelper() {
 	fonts[font::TITLE_LARGE].internal = requireFont(TITLE_FONT_FILE, PT_SIZE_LARGE);
 	fonts[font::TITLE_EXTRA_LARGE].internal = requireFont(TITLE_FONT_FILE, PT_SIZE_EXTRA_LARGE);
 
+	fonts[font::TINY].downsize = nullptr;
 	fonts[font::SMALL].downsize = &fonts[font::TINY];
 	fonts[font::MEDIUM].downsize = &fonts[font::SMALL];
 	fonts[font::LARGE].downsize = &fonts[font::MEDIUM];
 	fonts[font::EXTRA_LARGE].downsize = &fonts[font::LARGE];
+	fonts[font::TITLE_MEDIUM].downsize = nullptr;
 	fonts[font::TITLE_LARGE].downsize = &fonts[font::TITLE_MEDIUM];
 	fonts[font::TITLE_EXTRA_LARGE].downsize = &fonts[font::TITLE_LARGE];
 }
 
 void quitTextHelper() {
+	/*
+	// TTF_CloseFont hangs indefinitely
 	for (int i = 0; i < font::INVALID; i++)
 		TTF_CloseFont(fonts[i].internal);
+	*/
 }
 
 } // namespace common
