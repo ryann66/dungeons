@@ -16,5 +16,7 @@ include_directories(${SDL3_ttf_INCLUDE_DIRS})
 
 add_subdirectory(common)
 add_subdirectory(menu)
+add_subdirectory(game)
+add_subdirectory(loader)
 
 file(COPY ${CMAKE_SOURCE_DIR}/resources/ DESTINATION ${CMAKE_BINARY_DIR}/build/)
