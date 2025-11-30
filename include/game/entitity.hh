@@ -1,5 +1,6 @@
 #pragma once
 
+#include "componentResource.hh"
 #include "constants.h"
 #include "entityResource.hh"
 #include "itemResource.hh"
@@ -10,6 +11,8 @@
  * item: something that can be held in an inventory
  * unit: something that moves around in the world independently
  * itemEntity: an item that is in entity form
+ * component: a map object
+ * interactable: a map object that can be hit (collided)
  */
 
 namespace game {
@@ -52,5 +55,12 @@ class itemEntity : public entity {
 
 	entity* host;
 };
+
+class component {
+	const int xpos, ypos, width, height;
+	const componentResource* const imageResource;
+};
+
+class interactable : public component {};
 
 } // namespace game

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "component.hh"
 #include "effect.hh"
 #include "entitity.hh"
 
@@ -15,7 +14,7 @@ struct dungeon {
 	vector<entity*> temporary;
 
 	vector<component*> nonblocking;
-	vector<component*> blocking;
+	vector<interactable*> blocking;
 
 	vector<effect*> effects;
 };
