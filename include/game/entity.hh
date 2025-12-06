@@ -9,6 +9,8 @@
 
 #include <SDL3/SDL_rect.h>
 
+#include <vector>
+
 /*
  * This file contains classes for movable game entities and player items
  * entity: something that can be rendered in the game proper
@@ -17,9 +19,11 @@
  * weapon: an item that is in entity form
  * component: a map object
  * interactable: a map object that can be hit (collided)
+ * effect: a rendered animation
  */
 
 using common::bounds;
+using std::vector;
 
 namespace game {
 
@@ -37,6 +41,9 @@ class effect;
 
 class entity {
   public:
+	// set to true for entity to be garbage collected at the end of the iteration
+	bool kill = false;
+
 	// renders this
 	virtual void render() = 0;
 
@@ -48,33 +55,64 @@ class entity {
 };
 
 class item {
+  public:
+	item(const itemResource* const res) : imageResource(res) {}
+
+  private:
 	const itemResource* const imageResource;
-	const int unitWeight, stackSize;
 
 	int count;
 
-	inline int weight() const { return count * unitWeight; }
-
+  public:
 	// called when item is used (might heal player, spawn a weapon, etc)
 	virtual void onUse() {};
 };
 
+class weapon : public entity {
+  public:
+	weapon(const itemResource* const res, unit* const host);
+
+  private:
+	const itemResource* const imageResource;
+
+	float xoff, yoff;
+	float rotation;
+
+	unit* const host;
+
+  public:
+	void render();
+
+	virtual void move();
+
+	const virtual bounds hitbox();
+
+	virtual ~weapon();
+};
+
 class unit : public entity {
+  public:
+	unit(const entityResource* const res) : imageResource(res) {}
+
+  private:
 	float xpos, ypos;
-	orientation orientation;
+	enum orientation orientation;
 
 	const entityResource* const imageResource;
 
+  protected:
 	int health;
-	int weight;
-	int strength;
 
 	item* primary;
-	item* offhand;
-
 	item* inventory[INVENTORY_SIZE];
 
-	virtual void render();
+  private:
+	vector<weapon*> summons;
+	friend weapon::~weapon();
+	friend weapon::weapon(const itemResource* const, unit* const);
+
+  public:
+	void render();
 
 	virtual bool collides(bounds bounds);
 
@@ -82,32 +120,25 @@ class unit : public entity {
 	virtual void onCollision(weapon* attacker);
 
 	// moves the unit
-	virtual void move();
+	void move();
 
 	// subclass implementation of algorithm to determine intended movement direction
-	virtual enum orientation computeMove();
-};
+	virtual enum orientation computeMove() = 0;
 
-class weapon : public entity {
-	const item* const item;
-
-	float xoff, yoff;
-	float rotation;
-
-	entity* host;
-
-	virtual void render();
-
-	virtual void move();
-
-	const virtual bounds bounds();
+	virtual ~unit();
 };
 
 class component {
+  public:
+	component(const componentResource* const res, int xpos, int ypos, int width, int height)
+		: imageResource(res), xpos(xpos), ypos(ypos), width(width), height(height) {}
+
+  private:
 	const int xpos, ypos, width, height;
 	const componentResource* const imageResource;
 
-	virtual void render();
+  public:
+	void render();
 
 	virtual bool collides(bounds bounds);
 
@@ -115,15 +146,24 @@ class component {
 };
 
 class interactable : public component {
+  public:
+	interactable(const componentResource* const res, int xpos, int ypos, int width, int height)
+		: component(res, xpos, ypos, width, height) {}
+
 	virtual void onCollision(weapon weapon) = 0;
 };
 
 class effect : public entity {
+  public:
+	effect(const effectResource* const res) : imageResource(res) {}
+
+  private:
 	const effectResource* const imageResource;
 
-	virtual void render();
+  public:
+	void render();
 
-	virtual bool collides(bounds bounds) const {
+	bool collides(bounds bounds) const {
 		// effects never collide!
 		return false;
 	}

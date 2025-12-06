@@ -8,7 +8,16 @@ namespace game {
 
 class gameScene : public common::Scene {
   private:
-	dungeon dungeon;
+	int lastFrameTimeNS;
+	int currentFrameTimeNS;
+
+  public:
+	inline int getDeltaTimeNS() const { return currentFrameTimeNS - lastFrameTimeNS; }
+
+	inline int getCurrentFrameTimeNS() const { return currentFrameTimeNS; }
+
+  private:
+	dungeon level;
 };
 
 } // namespace game

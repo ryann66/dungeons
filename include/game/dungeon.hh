@@ -1,7 +1,6 @@
 #pragma once
 
-#include "effect.hh"
-#include "entitity.hh"
+#include "entity.hh"
 
 #include <vector>
 
@@ -23,7 +22,7 @@ struct dungeon {
 	vector<component*> blocking;
 
 	// interactable components are tested for collision by units and weapons
-	vector<interactable*> interactable;
+	vector<interactable*> dynamic;
 
 	// effects are given movement but not tested for collision
 	vector<effect*> effects;
