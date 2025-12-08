@@ -1,12 +1,10 @@
 #pragma once
 
 #include "componentResource.hh"
-#include "effectResource.hh"
 #include "entityResource.hh"
 #include "itemResource.hh"
 
 using game::componentResource;
-using game::effectResource;
 using game::entityResource;
 using game::itemResource;
 
@@ -15,16 +13,18 @@ namespace loader {
 // launches a separately threaded job to load all the game resources
 void launchLoader();
 
-// gets the current percentage of finish
+// gets the current percentage of finish as an int (0-100)
 // note: this is subject to race conditions (not monotonic)
 int percentFinish();
+
+// joins the loader thread back into the main thread
+// releases the resources held by loading, should be called after percentFinish() reaches 100
+void finishLoader();
 
 // frees all resources (don't use resource pointers after this)
 void unload();
 
 const componentResource* const componentFetch(const char* name);
-
-const effectResource* const effectFetch(const char* name);
 
 const entityResource* const entityFetch(const char* name);
 

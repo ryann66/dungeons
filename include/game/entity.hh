@@ -2,7 +2,6 @@
 
 #include "componentResource.hh"
 #include "constants.h"
-#include "effectResource.hh"
 #include "entityResource.hh"
 #include "itemResource.hh"
 #include "position.hh"
@@ -155,13 +154,7 @@ class interactable : public component {
 
 class effect : public entity {
   public:
-	effect(const effectResource* const res) : imageResource(res) {}
-
-  private:
-	const effectResource* const imageResource;
-
-  public:
-	void render();
+	void render() = 0;
 
 	bool collides(bounds bounds) const {
 		// effects never collide!
