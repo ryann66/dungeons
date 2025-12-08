@@ -1,5 +1,6 @@
 #include "textHelper.hh"
 
+#include "files.h"
 #include "main.hh"
 #include "position.hh"
 
@@ -12,9 +13,6 @@
 #define PT_SIZE_MEDIUM 32
 #define PT_SIZE_LARGE 48
 #define PT_SIZE_EXTRA_LARGE 60
-
-#define DEFAULT_FONT_FILE "./fonts/wiltype/wiltype.ttf"
-#define TITLE_FONT_FILE "./fonts/wiltype/wiltype.ttf"
 
 namespace common {
 
