@@ -1,7 +1,7 @@
 #pragma once
 
-#include "entityResource.hh"
 #include "itemResource.hh"
+#include "unitResource.hh"
 
 #include <vector>
 
@@ -21,7 +21,7 @@ struct componentResource {
 	vector<itemResource*> items;
 
 	// units to spawn on destruction
-	vector<entityResource*> units;
+	vector<unitResource*> units;
 };
 
 } // namespace game

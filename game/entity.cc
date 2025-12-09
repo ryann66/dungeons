@@ -19,7 +19,7 @@ weapon::~weapon() {
 		;
 }
 
-unit::unit(const entityResource* const res, vector<item*> items) : imageResource(res), health(res->maxhealth) {
+unit::unit(const unitResource* const res, vector<item*> items) : imageResource(res), health(res->maxhealth) {
 	int vidx = 0, iidx = 0;
 	if (!items.empty()) {
 		primary = items[vidx++];

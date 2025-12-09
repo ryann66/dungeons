@@ -23,7 +23,7 @@ thread* loader;
 int complete, total = 1;
 
 unordered_map<string, componentResource*> components;
-unordered_map<string, entityResource*> entities;
+unordered_map<string, unitResource*> entities;
 unordered_map<string, itemResource*> items;
 
 inline void loadFilelistInto(const char* dirpath, queue<path>& dst) {
@@ -102,7 +102,7 @@ const componentResource* const componentFetch(string name) {
 	return components[name];
 }
 
-const entityResource* const entityFetch(string name) {
+const unitResource* const entityFetch(string name) {
 	return entities[name];
 }
 

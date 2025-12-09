@@ -2,9 +2,9 @@
 
 #include "componentResource.hh"
 #include "constants.h"
-#include "entityResource.hh"
 #include "itemResource.hh"
 #include "position.hh"
+#include "unitResource.hh"
 
 #include <SDL3/SDL_rect.h>
 
@@ -91,16 +91,16 @@ class weapon : public entity {
 
 class unit : public entity {
   public:
-	unit(const entityResource* const res) : imageResource(res), health(res->maxhealth) {}
+	unit(const unitResource* const res) : imageResource(res), health(res->maxhealth) {}
 
 	// alternate ctor for filling inventory with a list of items
-	unit(const entityResource* const res, vector<item*> items);
+	unit(const unitResource* const res, vector<item*> items);
 
   private:
 	float xpos, ypos;
 	enum orientation orientation;
 
-	const entityResource* const imageResource;
+	const unitResource* const imageResource;
 
   protected:
 	int health;

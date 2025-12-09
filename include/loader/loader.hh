@@ -1,12 +1,12 @@
 #pragma once
 
 #include "componentResource.hh"
-#include "entityResource.hh"
 #include "itemResource.hh"
+#include "unitResource.hh"
 
 using game::componentResource;
-using game::entityResource;
 using game::itemResource;
+using game::unitResource;
 
 namespace loader {
 
@@ -26,7 +26,7 @@ void unload();
 
 const componentResource* const componentFetch(const char* name);
 
-const entityResource* const entityFetch(const char* name);
+const unitResource* const entityFetch(const char* name);
 
 const itemResource* const itemFetch(const char* name);
 
