@@ -6,3 +6,4 @@ find_package(Threads)
 target_link_libraries(loader PRIVATE Threads::Threads)
 
 target_include_directories(loader PUBLIC ../include/loader)
+target_include_directories(loader PRIVATE ../include/common)
