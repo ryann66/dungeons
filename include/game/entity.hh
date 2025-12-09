@@ -91,7 +91,10 @@ class weapon : public entity {
 
 class unit : public entity {
   public:
-	unit(const entityResource* const res) : imageResource(res) {}
+	unit(const entityResource* const res) : imageResource(res), health(res->maxhealth) {}
+
+	// alternate ctor for filling inventory with a list of items
+	unit(const entityResource* const res, vector<item*> items);
 
   private:
 	float xpos, ypos;
@@ -129,27 +132,27 @@ class unit : public entity {
 
 class component {
   public:
-	component(const componentResource* const res, int xpos, int ypos, int width, int height)
-		: imageResource(res), xpos(xpos), ypos(ypos), width(width), height(height) {}
+	component(const componentResource* const res, int xpos, int ypos) : imageResource(res), xpos(xpos), ypos(ypos) {}
 
-  private:
-	const int xpos, ypos, width, height;
+  protected:
+	const int xpos, ypos;
 	const componentResource* const imageResource;
 
   public:
 	void render();
 
 	virtual bool collides(bounds bounds);
-
-	virtual void onCollision(weapon weapon);
 };
 
 class interactable : public component {
-  public:
-	interactable(const componentResource* const res, int xpos, int ypos, int width, int height)
-		: component(res, xpos, ypos, width, height) {}
+  protected:
+	int health;
 
-	virtual void onCollision(weapon weapon) = 0;
+  public:
+	interactable(const componentResource* const res, int xpos, int ypos)
+		: component(res, xpos, ypos), health(res->maxhealth) {}
+
+	virtual void onCollision(weapon* weapon) {}
 };
 
 class effect : public entity {

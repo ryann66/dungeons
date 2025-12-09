@@ -19,6 +19,22 @@ weapon::~weapon() {
 		;
 }
 
+unit::unit(const entityResource* const res, vector<item*> items) : imageResource(res), health(res->maxhealth) {
+	int vidx = 0, iidx = 0;
+	if (!items.empty()) {
+		primary = items[vidx++];
+	} else {
+		primary = nullptr;
+	}
+	int idx;
+	for (idx = 0; idx < INVENTORY_SIZE && vidx < items.size(); idx++, vidx++) {
+		inventory[idx] = items[vidx];
+	}
+	for (; idx < INVENTORY_SIZE; idx++) {
+		inventory[idx] = nullptr;
+	}
+}
+
 unit::~unit() {
 	while (!summons.empty()) {
 		// summons should remove themselves when deleted!
