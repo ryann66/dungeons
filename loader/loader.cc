@@ -51,7 +51,7 @@ inline void loadFilelistInto(const char* dirpath, queue<path>& dst) {
 void launcherThread() {
 	if (loader != nullptr)
 		throw new logic_error("Already loading");
-	if (!components.empty() || !entities.empty() || !items.empty())
+	if (!components.empty() || !entities.empty() || !items.empty() || !images.empty())
 		throw new logic_error("Already loaded");
 
 	// compute todo lists
@@ -130,8 +130,9 @@ void launcherThread() {
 		}
 
 	} catch (runtime_error* ex) {
-		complete = total;
+		unload();
 		error = ex;
+		complete = total;
 	}
 }
 
@@ -145,13 +146,17 @@ int percentFinish() {
 	return 0;
 }
 
-void finishLoader() {
+runtime_error* finishLoader() {
 	loader->join();
 	delete loader;
 	complete = 0;
 	total = 1;
-	delete error;
-	error = nullptr;
+	if (error) {
+		runtime_error* ex = error;
+		error = nullptr;
+		return ex;
+	}
+	return nullptr;
 }
 
 void unload() {

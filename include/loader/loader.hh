@@ -4,6 +4,7 @@
 #include "itemResource.hh"
 #include "unitResource.hh"
 
+#include <stdexcept>
 #include <string>
 
 using std::string;
@@ -19,7 +20,9 @@ int percentFinish();
 
 // joins the loader thread back into the main thread
 // releases the resources held by loading, should be called after percentFinish() reaches 100
-void finishLoader();
+// returns an error if loader failed
+// returned error must be freed, though all other resources loaded will be freed
+std::runtime_error* finishLoader();
 
 // frees all resources (don't use resource pointers after this)
 void unload();
