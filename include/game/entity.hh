@@ -22,6 +22,9 @@
  */
 
 using common::bounds;
+using loader::componentResource;
+using loader::itemResource;
+using loader::unitResource;
 using std::vector;
 
 namespace game {

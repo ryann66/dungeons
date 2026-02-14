@@ -4,10 +4,6 @@
 #include "itemResource.hh"
 #include "unitResource.hh"
 
-using game::componentResource;
-using game::itemResource;
-using game::unitResource;
-
 namespace loader {
 
 // launches a separately threaded job to load all the game resources

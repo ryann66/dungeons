@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "itemResource.hh"
+#include "parser.hh"
 
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
@@ -11,7 +12,7 @@
 using std::string;
 using std::vector;
 
-namespace game {
+namespace loader {
 
 // entity resources can be rendered in any of the 8 subcardinal directions, with a different image for each
 struct unitResource {
@@ -27,6 +28,12 @@ struct unitResource {
 
 	// spawn items (starting with primary hand, then inventory)
 	vector<itemResource*> items;
+
+	/*
+	 * Builds a resource from the list of attributes
+	 * can throw a lot of different types of errors
+	 */
+	unitResource(unordered_map<string, node*>& attrlist);
 };
 
-} // namespace game
+} // namespace loader

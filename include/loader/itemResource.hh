@@ -2,12 +2,14 @@
 
 #include <string>
 
+#include "parser.hh"
+
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 
 using std::string;
 
-namespace game {
+namespace loader {
 
 // item resources can be rendered in any orientation, but only one image is used (rotated)
 struct itemResource {
@@ -46,6 +48,12 @@ struct itemResource {
 			int duration;
 		} potion;
 	} data;
+
+	/*
+	 * Builds a resource from the list of attributes
+	 * can throw a lot of different types of errors
+	 */
+	itemResource(unordered_map<string, node*>& attrlist);
 };
 
-} // namespace game
+} // namespace loader
