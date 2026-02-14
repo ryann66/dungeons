@@ -25,29 +25,20 @@ struct itemResource {
 
 	enum { SWORD, POTION } category;
 
-	union {
-		struct {
-			int damage;
-			int speed;
-		} sword;
+	// damage
+	int damage;
 
-		struct {
-			// health change (instant)
-			int health;
+	// health change
+	int health;
 
-			// health change per second
-			int heal;
+	// health change per second
+	int regen;
 
-			// speed stat change (removed on duration)
-			int speed;
+	// walkspeed stat change
+	int walkspeed;
 
-			// walkspeed stat change (removed on duration)
-			int walkspeed;
-
-			// duration in seconds (0 for instant)
-			int duration;
-		} potion;
-	} data;
+	// duration in seconds (0 for instant)
+	int duration;
 
 	/*
 	 * Builds a resource from the list of attributes
