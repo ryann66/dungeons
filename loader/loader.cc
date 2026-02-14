@@ -150,6 +150,7 @@ void finishLoader() {
 	delete loader;
 	complete = 0;
 	total = 1;
+	delete error;
 	error = nullptr;
 }
 
@@ -165,6 +166,10 @@ void unload() {
 	for (auto itr = items.begin(); itr != items.end();) {
 		delete itr->second;
 		itr = items.erase(itr);
+	}
+	for (auto itr = images.begin(); itr != images.end();) {
+		SDL_DestroyTexture(itr->second);
+		itr = images.erase(itr);
 	}
 }
 
