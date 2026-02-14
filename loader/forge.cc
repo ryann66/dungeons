@@ -6,6 +6,8 @@
 #include "resource.hh"
 #include "unitResource.hh"
 
+#include <SDL3/SDL_render.h>
+
 #include <stdexcept>
 #include <string>
 
@@ -169,7 +171,15 @@ itemResource::itemResource(unordered_map<string, node*>& attrlist) : resource(at
 		attrlist.erase(itr);
 	}
 
-	// TODO load image
+	itr = attrlist.find(KEYWORD_IMAGE_PATH);
+	if (itr == attrlist.end())
+		throw new undefined_token_error(KEYWORD_IMAGE_PATH);
+	if (itr->second->hasNext())
+		throw new multiple_definitions_error(KEYWORD_IMAGE_PATH);
+	SDL_Texture* img = imageFetch(itr->second->value);
+	if (img == nullptr)
+		throw new resource_not_found_error(itr->second->value);
+	texture = img;
 
 	if (!attrlist.empty())
 		throw new unexpected_token_error(attrlist.begin()->first);
@@ -279,7 +289,25 @@ unitResource::unitResource(unordered_map<string, node*>& attrlist) : resource(at
 	delete itr->second;
 	attrlist.erase(itr);
 
-	// TODO load images
+	itr = attrlist.find(KEYWORD_IMAGE_PATH);
+	if (itr == attrlist.end())
+		throw new undefined_token_error(KEYWORD_IMAGE_PATH);
+	else {
+		node* nd = itr->second;
+		for (int i = 0; i < 8; i++) {
+			if (nd == nullptr)
+				throw new multiple_definitions_error(KEYWORD_IMAGE_PATH, i - 1, 8);
+			SDL_Texture* img = imageFetch(nd->value);
+			if (img == nullptr)
+				throw new resource_not_found_error(nd->value);
+			textures[i] = img;
+			nd = nd->nxt;
+		}
+		if (nd)
+			throw new multiple_definitions_error(KEYWORD_IMAGE_PATH, 9, 8);
+		delete itr->second;
+		attrlist.erase(itr);
+	}
 
 	if (!attrlist.empty())
 		throw new unexpected_token_error(attrlist.begin()->first);
@@ -328,7 +356,15 @@ componentResource::componentResource(unordered_map<string, node*>& attrlist) : r
 		attrlist.erase(itr);
 	}
 
-	// TODO load image
+	auto itr = attrlist.find(KEYWORD_IMAGE_PATH);
+	if (itr == attrlist.end())
+		throw new undefined_token_error(KEYWORD_IMAGE_PATH);
+	if (itr->second->hasNext())
+		throw new multiple_definitions_error(KEYWORD_IMAGE_PATH);
+	SDL_Texture* img = imageFetch(itr->second->value);
+	if (img == nullptr)
+		throw new resource_not_found_error(itr->second->value);
+	texture = img;
 
 	if (!attrlist.empty())
 		throw new unexpected_token_error(attrlist.begin()->first);

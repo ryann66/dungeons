@@ -30,4 +30,6 @@ const unitResource* const entityFetch(string name);
 
 const itemResource* const itemFetch(string name);
 
+SDL_Texture* imageFetch(string name);
+
 } // namespace loader

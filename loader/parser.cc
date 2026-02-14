@@ -2,7 +2,7 @@
 
 namespace loader {
 
-unordered_map<string, node*> parsefile(istream file) {
+unordered_map<string, node*> parsefile(istream& file) {
 	unordered_map<string, node*> rvalue;
 	try {
 		while (!file.eof()) {

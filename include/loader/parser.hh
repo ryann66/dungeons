@@ -36,6 +36,6 @@ struct node {
  * Parses a file into the key-values contained within
  * Nodes in collection must be freed
  */
-unordered_map<string, node*> parsefile(istream file);
+unordered_map<string, node*> parsefile(istream& file);
 
 } // namespace loader

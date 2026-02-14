@@ -25,10 +25,10 @@ using std::to_string;
 
 // images to render
 //   -items: one image
-//   -units: eight images
+//   -units: eight images (in order N, NE, E, etc..)
 //   -components: one image
 // all images will get scaled to fit inside the bounding box
-#define IMAGE_PATH "img_path"
+#define KEYWORD_IMAGE_PATH "img_path"
 
 // ITERACTABLE ATTRIBUTES (apply to everything but items and components)
 // health to spawn in with
