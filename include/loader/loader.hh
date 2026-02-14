@@ -4,6 +4,10 @@
 #include "itemResource.hh"
 #include "unitResource.hh"
 
+#include <string>
+
+using std::string;
+
 namespace loader {
 
 // launches a separately threaded job to load all the game resources
@@ -20,10 +24,10 @@ void finishLoader();
 // frees all resources (don't use resource pointers after this)
 void unload();
 
-const componentResource* const componentFetch(const char* name);
+const componentResource* const componentFetch(string name);
 
-const unitResource* const entityFetch(const char* name);
+const unitResource* const entityFetch(string name);
 
-const itemResource* const itemFetch(const char* name);
+const itemResource* const itemFetch(string name);
 
 } // namespace loader

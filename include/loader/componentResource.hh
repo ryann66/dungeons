@@ -2,6 +2,7 @@
 
 #include "itemResource.hh"
 #include "parser.hh"
+#include "resource.hh"
 #include "unitResource.hh"
 
 #include <vector>
@@ -13,16 +14,16 @@ using std::vector;
 namespace loader {
 
 // component resources have only one render state
-struct componentResource {
+struct componentResource : public resource {
 	SDL_Texture* texture;
 
 	int maxhealth;
 
 	// items to spawn on destruction
-	vector<itemResource*> items;
+	vector<const itemResource*> items;
 
 	// units to spawn on destruction
-	vector<unitResource*> units;
+	vector<const unitResource*> units;
 
 	/*
 	 * Builds a resource from the list of attributes

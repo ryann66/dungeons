@@ -3,6 +3,7 @@
 #include <string>
 
 #include "parser.hh"
+#include "resource.hh"
 
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
@@ -12,18 +13,13 @@ using std::string;
 namespace loader {
 
 // item resources can be rendered in any orientation, but only one image is used (rotated)
-struct itemResource {
+struct itemResource : public resource {
 	string name;
 
 	SDL_Texture* texture;
 
-	// size (for rendering, hitbox, etc)
-	SDL_FPoint size;
-
-	// point to rotate around (not constrained to weapon bounds)
+	// point to rotate around (not constrained to item bounds)
 	SDL_FPoint origin;
-
-	enum { SWORD, POTION } category;
 
 	// damage
 	int damage;
