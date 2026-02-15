@@ -5,11 +5,11 @@ namespace common {
 
 class SceneManager;
 
-enum SceneType { MAIN_MENU, SETTINGS, GAME };
+enum SceneType { LOADER, MAIN_MENU, SETTINGS, GAME };
 
 class Scene {
   protected:
-	const SceneManager* context;
+	SceneManager* context;
 
   public:
 	const SceneType type;

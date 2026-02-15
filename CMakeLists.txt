@@ -9,15 +9,12 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
 find_package(SDL3 REQUIRED)
-include_directories(${SDL3_INCLUDE_DIRS})
-
 find_package(SDL3_ttf REQUIRED)
-include_directories(${SDL3_ttf_INCLUDE_DIRS})
+find_package(SDL3_image REQUIRED)
 
+add_subdirectory(common)
 add_subdirectory(menu)
 add_subdirectory(game)
 add_subdirectory(loader)
-
-add_subdirectory(common)
 
 file(COPY ${CMAKE_SOURCE_DIR}/resources/ DESTINATION ${CMAKE_BINARY_DIR}/build/)

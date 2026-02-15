@@ -23,5 +23,6 @@ More information on expected keys and values can be found in `forge.hh`
 - `loader.cc` orchestrates the loading from a high level.  Designed to operate as an independent thread with a monitoring front-end.  Caller is responsible for ensuring that loader has finished before advancing to the rest of the program.  Caller is responsible for verifying that the loader has not produced an error.
 - `parser.cc` converts reads resource files to produce a map of key-value attributes
 - `forge.cc` reads and checks attribute maps to build resources
+- `loaderScene.cc` creates a simple loading bar frontend to the loader
 - `resources.hh` (and others) describe the format of resources, including their component fields
 - `forge.hh` describes the keys and values expected in the forging process

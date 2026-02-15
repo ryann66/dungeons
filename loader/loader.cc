@@ -1,6 +1,7 @@
 #include "loader.hh"
 
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_stdinc.h>
 #include <filesystem>
 #include <fstream>
 #include <queue>
@@ -49,11 +50,6 @@ inline void loadFilelistInto(const char* dirpath, queue<path>& dst) {
 }
 
 void launcherThread() {
-	if (loader != nullptr)
-		throw new logic_error("Already loading");
-	if (!components.empty() || !entities.empty() || !items.empty() || !images.empty())
-		throw new logic_error("Already loaded");
-
 	// compute todo lists
 	queue<path> imglist, complist, entlist, itemlist;
 	loadFilelistInto(IMAGES_FOLDER, imglist);
@@ -69,11 +65,6 @@ void launcherThread() {
 
 	// update total
 	total = imglist.size() + itemlist.size() + entlist.size() + complist.size();
-
-	// TODO:
-	// for each item on todos
-	// 	create item
-	//	update complete
 	try {
 		while (!imglist.empty()) {
 			auto td = imglist.front();
@@ -137,18 +128,23 @@ void launcherThread() {
 }
 
 void launchLoader() {
+	if (loader != nullptr)
+		throw new logic_error("Already loading");
+	if (!components.empty() || !entities.empty() || !items.empty() || !images.empty())
+		throw new logic_error("Already loaded");
 	loader = new thread(launcherThread);
 }
 
 int percentFinish() {
 	if (total != 0)
-		return total / complete;
-	return 0;
+		return complete * 100 / total;
+	return complete == total ? 100 : 0;
 }
 
 runtime_error* finishLoader() {
 	loader->join();
 	delete loader;
+	loader = nullptr;
 	complete = 0;
 	total = 1;
 	if (error) {

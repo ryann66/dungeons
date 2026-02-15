@@ -16,9 +16,10 @@ class SceneManager {
 	unordered_map<SceneType, Scene*> scenes;
 
   public:
-	SceneManager(Scene* (*main)(SceneManager*)) {
-		current = main(this);
-		scenes[MAIN_MENU] = current;
+	SceneManager(SceneType type, Scene* (*scenefunc)(SceneManager*)) {
+		current = scenefunc(this);
+		scenes[type] = current;
+		current->onLoad();
 	}
 
 	/*

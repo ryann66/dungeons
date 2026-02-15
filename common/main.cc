@@ -1,6 +1,11 @@
 #include "main.hh"
+
+#include "colors.h"
+#include "loaderScene.hh"
+#include "scene.hh"
 #include "textHelper.hh"
 
+#include <SDL3/SDL_pixels.h>
 #include <exception>
 #include <filesystem>
 
@@ -33,8 +38,9 @@ using std::filesystem::path;
 
 using common::initTextHelper;
 using common::quitTextHelper;
-using common::Scene;
 using common::SceneManager;
+
+using loader::buildLoaderScene;
 
 using menu::buildMainMenu;
 
@@ -60,7 +66,6 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv) {
 		current_path(executable);
 	}
 
-	*appstate = new SceneManager(buildMainMenu);
 	if (!SDL_CreateWindowAndRenderer(PROGRAM_NAME, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE,
 									 &window, &renderer)) {
 		log_sdl_error();
@@ -88,14 +93,18 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char** argv) {
 		return SDL_APP_FAILURE;
 	}
 
+	*appstate = new SceneManager(common::LOADER, buildLoaderScene);
+	((SceneManager*)(*appstate))->addScene(buildMainMenu((SceneManager*)*appstate), common::MAIN_MENU);
+
 	return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppIterate(void* appstate) {
 	try {
-		Scene* scn = ((SceneManager*)appstate)->getCurrentScene();
-		scn->iterate();
-		scn->render();
+		((SceneManager*)appstate)->getCurrentScene()->iterate();
+		SDL_SetRenderDrawColor(renderer, COLOR_BLACK, SDL_ALPHA_OPAQUE);
+		SDL_RenderClear(renderer);
+		((SceneManager*)appstate)->getCurrentScene()->render();
 		SDL_RenderPresent(renderer);
 		return SDL_APP_CONTINUE;
 	} catch (exception* exp) {
