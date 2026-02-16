@@ -1,0 +1,10 @@
+name:bricks
+type:sword
+size_x:1
+size_y:1
+img_path:brick.svg
+attr_damage:1
+attr_speed:0
+attr_health:-5
+attr_regen:0
+attr_duration:0

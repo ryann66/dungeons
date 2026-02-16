@@ -53,8 +53,6 @@ resource::resource(unordered_map<string, node*>& attrlist) {
 		throw new undefined_token_error(KEYWORD_TYPE);
 	if (itr->second->hasNext())
 		throw new multiple_definitions_error(KEYWORD_TYPE);
-	delete itr->second;
-	attrlist.erase(itr);
 
 	if (!itr->second->value.compare(KEYWORD_TYPE_COMPONENT))
 		type = COMPONENT;
@@ -180,6 +178,8 @@ itemResource::itemResource(unordered_map<string, node*>& attrlist) : resource(at
 	if (img == nullptr)
 		throw new resource_not_found_error(itr->second->value);
 	texture = img;
+	delete itr->second;
+	attrlist.erase(itr);
 
 	if (!attrlist.empty())
 		throw new unexpected_token_error(attrlist.begin()->first);
@@ -259,9 +259,9 @@ unitResource::unitResource(unordered_map<string, node*>& attrlist) : resource(at
 				throw new resource_not_found_error(nd->value);
 			items.push_back(res);
 		}
+		delete itr->second;
+		attrlist.erase(itr);
 	}
-	delete itr->second;
-	attrlist.erase(itr);
 
 	itr = attrlist.find(KEYWORD_DEATH_ITEMS);
 	if (itr != attrlist.end()) {
@@ -272,9 +272,9 @@ unitResource::unitResource(unordered_map<string, node*>& attrlist) : resource(at
 				throw new resource_not_found_error(nd->value);
 			deathitems.push_back(res);
 		}
+		delete itr->second;
+		attrlist.erase(itr);
 	}
-	delete itr->second;
-	attrlist.erase(itr);
 
 	itr = attrlist.find(KEYWORD_DEATH_UNITS);
 	if (itr != attrlist.end()) {
@@ -285,9 +285,9 @@ unitResource::unitResource(unordered_map<string, node*>& attrlist) : resource(at
 				throw new resource_not_found_error(nd->value);
 			deathunits.push_back(res);
 		}
+		delete itr->second;
+		attrlist.erase(itr);
 	}
-	delete itr->second;
-	attrlist.erase(itr);
 
 	itr = attrlist.find(KEYWORD_IMAGE_PATH);
 	if (itr == attrlist.end())
@@ -365,6 +365,8 @@ componentResource::componentResource(unordered_map<string, node*>& attrlist) : r
 	if (img == nullptr)
 		throw new resource_not_found_error(itr->second->value);
 	texture = img;
+	delete itr->second;
+	attrlist.erase(itr);
 
 	if (!attrlist.empty())
 		throw new unexpected_token_error(attrlist.begin()->first);

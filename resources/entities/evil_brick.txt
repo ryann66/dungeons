@@ -1,0 +1,7 @@
+name:evil_brick
+type:unit
+size_x:10
+size_y:10
+img_path:brick.svg:brick.svg:brick.svg:brick.svg:brick.svg:brick.svg:brick.svg:brick.svg
+max_health:5
+team:hostile

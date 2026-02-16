@@ -8,6 +8,8 @@ unordered_map<string, node*> parsefile(istream& file) {
 		while (!file.eof()) {
 			string line;
 			file >> line;
+			if (line.empty())
+				continue;
 			size_t lag = line.find_first_of(KEYWORD_SEPARATOR);
 			if (lag == line.npos)
 				throw new parse_error("invalid line (no separator): " + line);

@@ -14,8 +14,6 @@ namespace loader {
 
 // item resources can be rendered in any orientation, but only one image is used (rotated)
 struct itemResource : public resource {
-	string name;
-
 	SDL_Texture* texture;
 
 	// point to rotate around (not constrained to item bounds)

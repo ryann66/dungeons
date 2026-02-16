@@ -1,0 +1,5 @@
+name:brick
+type:component
+size_x:10
+size_y:10
+img_path:brick.svg
