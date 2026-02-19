@@ -23,6 +23,8 @@ inline int stoi(string& str) {
 
 const char* typestring(resource_type type) {
 	switch (type) {
+	case BACKGROUND:
+		return KEYWORD_TYPE_BACKGROUND;
 	case COMPONENT:
 		return KEYWORD_TYPE_COMPONENT;
 	case INTERACTABLE:
@@ -54,7 +56,9 @@ resource::resource(unordered_map<string, node*>& attrlist) {
 	if (itr->second->hasNext())
 		throw new multiple_definitions_error(KEYWORD_TYPE);
 
-	if (!itr->second->value.compare(KEYWORD_TYPE_COMPONENT))
+	if (!itr->second->value.compare(KEYWORD_TYPE_BACKGROUND))
+		type = BACKGROUND;
+	else if (!itr->second->value.compare(KEYWORD_TYPE_COMPONENT))
 		type = COMPONENT;
 	else if (!itr->second->value.compare(KEYWORD_TYPE_INTERACTABLE))
 		type = INTERACTABLE;
@@ -355,6 +359,8 @@ componentResource::componentResource(unordered_map<string, node*>& attrlist) : r
 		delete itr->second;
 		attrlist.erase(itr);
 	}
+
+	is_background = type == BACKGROUND;
 
 	auto itr = attrlist.find(KEYWORD_IMAGE_PATH);
 	if (itr == attrlist.end())

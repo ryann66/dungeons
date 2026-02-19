@@ -19,6 +19,8 @@ struct componentResource : public resource {
 
 	int maxhealth;
 
+	bool is_background;
+
 	// items to spawn on destruction
 	vector<const itemResource*> items;
 

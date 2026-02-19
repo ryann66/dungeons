@@ -18,6 +18,7 @@ using std::to_string;
 // TYPES
 #define KEYWORD_TYPE_INVALID "invalid"
 #define KEYWORD_TYPE_COMPONENT "component"
+#define KEYWORD_TYPE_BACKGROUND "background"
 #define KEYWORD_TYPE_INTERACTABLE "interactable"
 #define KEYWORD_TYPE_UNIT "unit"
 #define KEYWORD_TYPE_SWORD "sword"
