@@ -4,10 +4,13 @@
 #include "constants.h"
 #include "itemResource.hh"
 #include "position.hh"
+#include "resource.hh"
 #include "unitResource.hh"
 
 #include <SDL3/SDL_rect.h>
 
+#include <bitset>
+#include <list>
 #include <vector>
 
 /*
@@ -24,7 +27,10 @@
 using common::bounds;
 using loader::componentResource;
 using loader::itemResource;
+using loader::resource;
 using loader::unitResource;
+using std::bitset;
+using std::list;
 using std::vector;
 
 namespace game {
@@ -32,6 +38,18 @@ namespace game {
 // NOTE: CENTER is valid in some contexts, or may be interpreted as any other value in cases where the absence of a
 // cardinal direction is illogical
 enum orientation { CENTER, NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST };
+
+struct move_command {
+	// movement
+	orientation direction;
+	float max_distance;
+
+	// attack direction (NaN for no attack)
+	float rotation;
+
+	// items to use
+	bitset<INVENTORY_SIZE> itemuse;
+};
 
 class entity;
 class item;
@@ -42,23 +60,33 @@ class interactable;
 class effect;
 
 class entity {
-  public:
-	// set to true for entity to be garbage collected at the end of the iteration
+  private:
 	bool kill = false;
 
-	// renders this
+  protected:
+	bounds hitbox;
+
+  public:
+	entity(bounds hitbox) : hitbox(hitbox) {}
+
+	entity(const resource* const res, float xpos, float ypos)
+		: hitbox(bounds{.x1 = xpos - res->size.x / 2,
+						.y1 = ypos - res->size.y / 2,
+						.x2 = xpos + res->size.x / 2,
+						.y2 = ypos + res->size.y / 2}) {}
+
+	void killEntity() { kill = true; }
+
+	bool isKilled() { return kill; }
+
 	virtual void render() = 0;
 
-	// tests if this collides with the bounding box
-	virtual bool collides(bounds bounds) = 0;
-
-	// optional behavior for when hit with a weapon
-	virtual void onCollision(weapon* attacker) {};
+	bounds& getBounds() { return hitbox; }
 };
 
-class item {
+class item : public entity {
   public:
-	item(const itemResource* const res) : imageResource(res) {}
+	item(const itemResource* const res, float xpos, float ypos) : imageResource(res), entity(res, xpos, ypos) {}
 
   private:
 	const itemResource* const imageResource;
@@ -66,8 +94,9 @@ class item {
 	int count;
 
   public:
-	// called when item is used (might heal player, spawn a weapon, etc)
-	virtual void onUse() {};
+	void render();
+
+	void onUnitCollision(unit* collider) { killEntity(); }
 };
 
 class weapon : public entity {
@@ -85,87 +114,94 @@ class weapon : public entity {
   public:
 	void render();
 
-	virtual void move();
+	void move();
 
-	const virtual bounds hitbox();
+	float getRotation() { return rotation; }
+
+	void onWeaponCollision(weapon* collider);
+
+	void onUnitCollision(unit* collider);
+
+	void onInteractableCollision(interactable* collider);
 
 	virtual ~weapon();
 };
 
 class unit : public entity {
   public:
-	unit(const unitResource* const res) : imageResource(res), health(res->maxhealth) {}
-
-	// alternate ctor for filling inventory with a list of items
-	unit(const unitResource* const res, vector<item*> items);
+	unit(const unitResource* const res, float xpos, float ypos);
 
   private:
-	float xpos, ypos;
-	enum orientation orientation;
-
 	const unitResource* const imageResource;
 
-  protected:
+	enum orientation orientation;
+
 	int health;
 
+	bounds valid_loc;
+
+  protected:
 	item* primary;
 	item* inventory[INVENTORY_SIZE];
 
   private:
-	vector<weapon*> summons;
-	friend weapon::~weapon();
+	list<weapon*> summons;
+
 	friend weapon::weapon(const itemResource* const, unit* const);
+	friend weapon::~weapon();
 
   public:
 	void render();
 
-	virtual bool collides(bounds bounds);
+	void onWeaponCollision(weapon* collider);
 
-	// deals damage to the unit based on the weapon stats
-	virtual void onCollision(weapon* attacker);
+	void onUnitCollision(unit* collider);
 
-	// moves the unit
+	void onComponentCollision(component* collider);
+
+	void onInteractableCollision(interactable* collider);
+
 	void move();
 
-	// subclass implementation of algorithm to determine intended movement direction
-	virtual enum orientation computeMove() = 0;
+	// called on failed move (collision), brings the unit back to where it started
+	void unmove() { hitbox = valid_loc; }
 
+  protected:
+	// subclass determines controls movement command (but can't move self)
+	virtual move_command computeMove() = 0;
+
+  public:
 	virtual ~unit();
 };
 
-class component {
+class component : entity {
   public:
-	component(const componentResource* const res, int xpos, int ypos) : imageResource(res), xpos(xpos), ypos(ypos) {}
+	component(const componentResource* const res, float xpos, float ypos)
+		: imageResource(res), entity(res, xpos, ypos) {}
 
   protected:
-	const int xpos, ypos;
 	const componentResource* const imageResource;
 
   public:
 	void render();
-
-	virtual bool collides(bounds bounds);
 };
 
 class interactable : public component {
-  protected:
+  private:
 	int health;
 
   public:
-	interactable(const componentResource* const res, int xpos, int ypos)
+	interactable(const componentResource* const res, float xpos, float ypos)
 		: component(res, xpos, ypos), health(res->maxhealth) {}
 
-	virtual void onCollision(weapon* weapon) {}
+	void onWeaponCollision(weapon* collider);
 };
 
 class effect : public entity {
   public:
-	void render() = 0;
+	effect(bounds bounds) : entity(bounds) {}
 
-	bool collides(bounds bounds) const {
-		// effects never collide!
-		return false;
-	}
+	virtual void render() = 0;
 };
 
 } // namespace game
