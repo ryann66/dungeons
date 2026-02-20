@@ -82,6 +82,8 @@ class entity {
 	virtual void render() = 0;
 
 	bounds& getBounds() { return hitbox; }
+
+	virtual float getRotation() { return 0; }
 };
 
 class item : public entity {
