@@ -31,6 +31,9 @@ struct itemResource : public resource {
 	// walkspeed stat change
 	int walkspeed;
 
+	// strength stat change
+	int strength;
+
 	// duration in seconds (0 for instant)
 	int duration;
 

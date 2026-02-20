@@ -29,6 +29,7 @@ struct unitResource : public resource {
 	int maxhealth;
 	int speed;
 	int walkspeed;
+	int strength;
 
 	unit_team team;
 

@@ -34,6 +34,8 @@ struct resource {
 
 	resource_type type;
 
+	int weight;
+
 	resource(unordered_map<string, node*>& attrlist);
 };
 

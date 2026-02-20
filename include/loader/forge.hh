@@ -11,6 +11,8 @@ using std::to_string;
 #define KEYWORD_NAME "name"
 // component,interactable,unit,sword,potion
 #define KEYWORD_TYPE "type"
+// weight (counters weapons)
+#define KEYWORD_WEIGHT "weight"
 // size of bounding box
 #define KEYWORD_SIZE_X "size_x"
 #define KEYWORD_SIZE_Y "size_y"
@@ -44,6 +46,8 @@ using std::to_string;
 #define KEYWORD_TEAM "team"
 // unit movement speed
 #define KEYWORD_SPEED "speed"
+// unit strength
+#define KEYWORD_STRENGTH "strength"
 // items held in inventory (also spawned on death)
 #define KEYWORD_ITEMS "items"
 // point to attach items to
@@ -63,6 +67,8 @@ using std::to_string;
 #define KEYWORD_STAT_DAMAGE "attr_damage"
 // speed increase
 #define KEYWORD_STAT_SPEED "attr_speed"
+// strength increase
+#define KEYWORD_STAT_STRENGTH "attr_strength"
 // health increase
 #define KEYWORD_STAT_HEALTH "attr_health"
 // health regen

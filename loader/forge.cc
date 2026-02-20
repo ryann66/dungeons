@@ -73,6 +73,19 @@ resource::resource(unordered_map<string, node*>& attrlist) {
 	delete itr->second;
 	attrlist.erase(itr);
 
+	itr = attrlist.find(KEYWORD_WEIGHT);
+	if (itr == attrlist.end()) {
+		weight = 0;
+	} else {
+		if (itr->second->hasNext())
+			throw new multiple_definitions_error(KEYWORD_WEIGHT);
+		weight = stoi(itr->second->value);
+		if (weight < 0)
+			throw new invalid_value_error(KEYWORD_WEIGHT, itr->second->value);
+	}
+	delete itr->second;
+	attrlist.erase(itr);
+
 	itr = attrlist.find(KEYWORD_SIZE_X);
 	if (itr == attrlist.end())
 		throw new undefined_token_error(KEYWORD_SIZE_X);
@@ -136,6 +149,17 @@ itemResource::itemResource(unordered_map<string, node*>& attrlist) : resource(at
 		if (itr->second->hasNext())
 			throw new multiple_definitions_error(KEYWORD_STAT_SPEED);
 		walkspeed = stoi(itr->second->value);
+		delete itr->second;
+		attrlist.erase(itr);
+	}
+
+	itr = attrlist.find(KEYWORD_STAT_STRENGTH);
+	if (itr == attrlist.end()) {
+		strength = 0;
+	} else {
+		if (itr->second->hasNext())
+			throw new multiple_definitions_error(KEYWORD_STAT_STRENGTH);
+		strength = stoi(itr->second->value);
 		delete itr->second;
 		attrlist.erase(itr);
 	}
@@ -217,6 +241,17 @@ unitResource::unitResource(unordered_map<string, node*>& attrlist) : resource(at
 		if (itr->second->hasNext())
 			throw new multiple_definitions_error(KEYWORD_SPEED);
 		speed = stoi(itr->second->value);
+		delete itr->second;
+		attrlist.erase(itr);
+	}
+
+	itr = attrlist.find(KEYWORD_STRENGTH);
+	if (itr == attrlist.end()) {
+		strength = 0;
+	} else {
+		if (itr->second->hasNext())
+			throw new multiple_definitions_error(KEYWORD_STRENGTH);
+		strength = stoi(itr->second->value);
 		delete itr->second;
 		attrlist.erase(itr);
 	}
