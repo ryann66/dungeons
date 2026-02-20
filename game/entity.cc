@@ -38,7 +38,8 @@ unit::unit(const unitResource* const res, vector<item*> items) : imageResource(r
 unit::~unit() {
 	while (!summons.empty()) {
 		// summons should remove themselves when deleted!
-		delete summons[0];
+		delete summons.back();
+		summons.pop_back();
 	}
 }
 
