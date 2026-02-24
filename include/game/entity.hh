@@ -103,10 +103,14 @@ class item : public entity {
 
 class weapon : public entity {
   public:
-	weapon(const itemResource* const res, unit* const host);
+	weapon(const itemResource* const res, unit* const host, int strength, int damage);
+
+	const itemResource* const imageResource;
+
+	const int damage;
 
   private:
-	const itemResource* const imageResource;
+	int strength;
 
 	float xoff, yoff;
 	float rotation;
@@ -133,9 +137,9 @@ class unit : public entity {
   public:
 	unit(const unitResource* const res, float xpos, float ypos);
 
-  private:
 	const unitResource* const imageResource;
 
+  private:
 	enum orientation orientation;
 
 	int health;
@@ -143,13 +147,13 @@ class unit : public entity {
 	bounds valid_loc;
 
   protected:
-	item* primary;
-	item* inventory[INVENTORY_SIZE];
+	const itemResource* primary;
+	const itemResource* inventory[INVENTORY_SIZE];
 
   private:
 	list<weapon*> summons;
 
-	friend weapon::weapon(const itemResource* const, unit* const);
+	friend weapon::weapon(const itemResource* const, unit* const, int strength, int damage);
 	friend weapon::~weapon();
 
   public:
@@ -176,12 +180,11 @@ class unit : public entity {
 	virtual ~unit();
 };
 
-class component : entity {
+class component : public entity {
   public:
 	component(const componentResource* const res, float xpos, float ypos)
 		: imageResource(res), entity(res, xpos, ypos) {}
 
-  protected:
 	const componentResource* const imageResource;
 
   public:

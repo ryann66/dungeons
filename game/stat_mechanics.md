@@ -9,7 +9,7 @@ Damage is the amount of health removed from any units hit.
 Strength is the ability to of an attack to push through objects.  An attack is destroyed when its strength is nonpositive
 
 ## Weight
-Weight is the defensive counterpart to strength.  An objects weight is subtracted from the strength of the attack that hits it.
+Weight is the defensive counterpart to strength.  An objects weight is subtracted from the strength of the attack that hits it.  Weapons' strength counts as additional weight.
 
 ## Health
 Health is life points.
