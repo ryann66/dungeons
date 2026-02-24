@@ -285,6 +285,8 @@ unitResource::unitResource(unordered_map<string, node*>& attrlist) : resource(at
 		if (itr->second->hasNext())
 			throw new multiple_definitions_error(KEYWORD_HEALTH);
 		maxhealth = stoi(itr->second->value);
+		if (maxhealth <= 0)
+			throw new invalid_value_error(KEYWORD_HEALTH, itr->second->value);
 		delete itr->second;
 		attrlist.erase(itr);
 	}
