@@ -1,11 +1,16 @@
 #include "entity.hh"
 #include "constants.h"
+#include "main.hh"
 #include "resource.hh"
+
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 
 namespace game {
 
 void item::render() {
-	// TODO
+	SDL_FRect rect{.x = hitbox.x1, .y = hitbox.y1, .w = hitbox.x2 - hitbox.x1, .h = hitbox.y2 - hitbox.y1};
+	SDL_RenderTexture(renderer, imageResource->texture, NULL, &rect);
 }
 
 weapon::weapon(const itemResource* const res, unit* const host, int strength, int damage)
@@ -20,7 +25,9 @@ weapon::weapon(const itemResource* const res, unit* const host, int strength, in
 }
 
 void weapon::render() {
-	// TODO
+	SDL_FRect rect{.x = hitbox.x1, .y = hitbox.y1, .w = hitbox.x2 - hitbox.x1, .h = hitbox.y2 - hitbox.y1};
+	SDL_FPoint org{.x = hitbox.x1 + xoff, .y = hitbox.y1 + yoff};
+	SDL_RenderTextureRotated(renderer, imageResource->texture, NULL, &rect, rotation, &org, SDL_FLIP_NONE);
 }
 
 void weapon::move() {
@@ -75,7 +82,37 @@ unit::unit(const unitResource* const res, float xpos, float ypos)
 }
 
 void unit::render() {
-	// TODO
+	SDL_Texture* text;
+	switch (orientation) {
+	default:
+	case NORTH:
+		text = imageResource->textures[0];
+		break;
+	case NORTHEAST:
+		text = imageResource->textures[1];
+		break;
+	case EAST:
+		text = imageResource->textures[2];
+		break;
+	case SOUTHEAST:
+		text = imageResource->textures[3];
+		break;
+	case SOUTH:
+		text = imageResource->textures[4];
+		break;
+	case SOUTHWEST:
+		text = imageResource->textures[5];
+		break;
+	case WEST:
+		text = imageResource->textures[6];
+		break;
+	case NORTHWEST:
+		text = imageResource->textures[7];
+		break;
+	}
+
+	SDL_FRect rect{.x = hitbox.x1, .y = hitbox.y1, .w = hitbox.x2 - hitbox.x1, .h = hitbox.y2 - hitbox.y1};
+	SDL_RenderTexture(renderer, text, NULL, &rect);
 }
 
 void unit::onWeaponCollision(weapon* collider) {
@@ -100,7 +137,8 @@ unit::~unit() {
 }
 
 void component::render() {
-	// TODO
+	SDL_FRect rect{.x = hitbox.x1, .y = hitbox.y1, .w = hitbox.x2 - hitbox.x1, .h = hitbox.y2 - hitbox.y1};
+	SDL_RenderTexture(renderer, imageResource->texture, NULL, &rect);
 }
 
 void interactable::onWeaponCollision(weapon* collider) {
