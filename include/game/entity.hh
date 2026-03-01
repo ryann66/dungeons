@@ -47,8 +47,10 @@ struct move_command {
 	// attack direction (NaN for no attack)
 	float rotation;
 
-	// items to use
-	bitset<INVENTORY_SIZE> itemuse;
+	// item slot and buttons to use
+	int equip;
+	bool primary_use;
+	bool secondary_use;
 };
 
 class entity;
@@ -141,10 +143,12 @@ class unit : public entity {
 
   private:
 	enum orientation orientation;
-
-	int health;
-
 	bounds valid_loc;
+
+	int maxhealth, health, strength, damage, regen, speed;
+
+	// movelocked bans movement
+	bool movelocked = false;
 
   protected:
 	const itemResource* primary;
@@ -154,6 +158,7 @@ class unit : public entity {
 	list<weapon*> summons;
 
 	friend weapon::weapon(const itemResource* const, unit* const, int strength, int damage);
+	friend void weapon::render();
 	friend weapon::~weapon();
 
   public:
@@ -167,10 +172,25 @@ class unit : public entity {
 
 	void onInteractableCollision(interactable* collider);
 
+	int getStrength() { return std::max(0, strength); }
+
+	int getDamage() { return std::max(0, damage); }
+
+	int getMaxHealth() { return std::max(0, maxhealth); }
+
+	int getHealth() { return std::max(0, std::min(health, maxhealth)); }
+
+	int getRegen() { return regen; }
+
+	int getSpeed() { return std::max(0, speed); }
+
 	void move();
 
 	// called on failed move (collision), brings the unit back to where it started
 	void unmove() { hitbox = valid_loc; }
+
+	// equips a weapon/item or uses a consumable
+	void equip(int inventory_idx);
 
   protected:
 	// subclass determines controls movement command (but can't move self)

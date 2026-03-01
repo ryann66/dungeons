@@ -5,6 +5,7 @@
 
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
+#include <stdexcept>
 
 namespace game {
 
@@ -14,24 +15,30 @@ void item::render() {
 }
 
 weapon::weapon(const itemResource* const res, unit* const host, int strength, int damage)
-	: imageResource(res), host(host), strength(strength), damage(damage),
-	  entity(bounds{
-		  .x1 = host->getBounds().x1 + host->imageResource->attach.x - res->origin.x,
-		  .y1 = host->getBounds().y1 + host->imageResource->attach.y - res->origin.y,
-		  .x2 = host->getBounds().x1 + host->imageResource->attach.x - res->origin.x + res->size.x,
-		  .y2 = host->getBounds().y1 + host->imageResource->attach.y - res->origin.y + res->size.y,
-	  }) {
+	: imageResource(res), host(host), strength(strength), damage(damage), entity(bounds{
+																			  .x1 = 0,
+																			  .y1 = 0,
+																			  .x2 = res->size.x,
+																			  .y2 = res->size.y,
+																		  }) {
 	host->summons.push_back(this);
+	host->movelocked = true;
 }
 
 void weapon::render() {
-	SDL_FRect rect{.x = hitbox.x1, .y = hitbox.y1, .w = hitbox.x2 - hitbox.x1, .h = hitbox.y2 - hitbox.y1};
+	SDL_FRect rect{
+		.x = host->hitbox.x1 + host->imageResource->attach.x - imageResource->origin.x,
+		.y = host->hitbox.y1 + host->imageResource->attach.y - imageResource->origin.y,
+		.w = host->hitbox.x1 + host->imageResource->attach.x - imageResource->origin.x + hitbox.x2 - hitbox.x1,
+		.h = host->hitbox.y1 + host->imageResource->attach.y - imageResource->origin.y + hitbox.y2 - hitbox.y1};
 	SDL_FPoint org{.x = hitbox.x1 + xoff, .y = hitbox.y1 + yoff};
 	SDL_RenderTextureRotated(renderer, imageResource->texture, NULL, &rect, rotation, &org, SDL_FLIP_NONE);
 }
 
 void weapon::move() {
-	// TODO
+	// move
+
+	// if finished, kill
 }
 
 void weapon::onWeaponCollision(weapon* collider) {
@@ -53,6 +60,7 @@ void weapon::onInteractableCollision(interactable* collider) {
 }
 
 weapon::~weapon() {
+	host->movelocked = false;
 	for (auto it = host->summons.begin(); it != host->summons.end(); it++) {
 		if (*it == this) {
 			host->summons.erase(it);
@@ -67,18 +75,19 @@ weapon::~weapon() {
 unit::unit(const unitResource* const res, float xpos, float ypos)
 	: imageResource(res), health(res->maxhealth), entity(res, xpos, ypos), primary(nullptr),
 	  valid_loc({.x1 = 0, .y1 = 0, .x2 = res->size.x, .y2 = res->size.y}), orientation(NORTH) {
-	int iidx = 0;
+	int iidx = 0, pidx = -1;
 	for (const itemResource* it : res->items) {
-		if (it->type == loader::SWORD && primary == nullptr)
-			primary = it;
-		else {
-			inventory[iidx++] = it;
-			if (iidx == INVENTORY_SIZE)
-				break;
-		}
+		inventory[iidx] = it;
+		if (it->type == loader::SWORD && pidx == -1)
+			pidx = iidx;
+		if (++iidx == INVENTORY_SIZE)
+			break;
 	}
 	for (; iidx < INVENTORY_SIZE; iidx++)
 		inventory[iidx] = nullptr;
+	if (pidx != -1) {
+		equip(pidx);
+	}
 }
 
 void unit::render() {
@@ -126,7 +135,44 @@ void unit::onComponentCollision(component* collider) {}
 void unit::onInteractableCollision(interactable* collider) {}
 
 void unit::move() {
-	// TODO
+	// check for expired stats
+
+	// check movelock
+	if (movelocked)
+		return;
+
+	// move
+
+	// attack/use item
+}
+
+void unit::equip(int iidx) {
+	if (movelocked)
+		return;
+
+	if (iidx < 0 || iidx >= INVENTORY_SIZE) {
+		throw new std::invalid_argument("Inventory index out of bounds");
+	}
+
+	// check is weapon (or equipment in later versions)
+	const itemResource* res = inventory[iidx];
+	if (res->type != loader::SWORD) {
+		// adjust stats
+		strength -= primary->strength;
+		strength += res->strength;
+		damage -= primary->damage;
+		damage += res->damage;
+		regen -= primary->regen;
+		regen += res->regen;
+		speed -= primary->walkspeed;
+		speed += res->walkspeed;
+
+		maxhealth -= primary->health;
+		maxhealth += res->health;
+		health = std::min(maxhealth, health);
+	} else {
+		throw new std::invalid_argument("Inventory slot is not equippable");
+	}
 }
 
 unit::~unit() {
